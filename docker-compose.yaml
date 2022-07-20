@@ -1,0 +1,35 @@
+version: '3.4'
+
+services:
+  postgres:
+    container_name: postgress
+    image: postgres
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: car_game
+    volumes:
+      - database-data:/var/lib/postgresql/data/
+  api:
+    container_name: api
+    build: ./backend
+    ports:
+      - 8080:8080
+    depends_on:
+      - postgres
+  # web:
+  #   container_name: web
+  #   build: ./frontend
+  #   restart: always
+  #   ports: 
+  #     - 3000:3000
+  #   env_file:
+  #     - ./frontend/.env
+  #   depends_on:
+  #     - api
+
+volumes:
+  database-data:
